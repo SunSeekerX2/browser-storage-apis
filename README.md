@@ -1,144 +1,46 @@
-# Window localStorage api封装
+# Browser-storage-apis
 
-## 关于
+> Tr:To help you make better use of localstorage
+>
+> 帮助您更好地使用本地存储
 
+
+
+###  ❔ Why
+
+> Tr:Recently, the background management project of the development company needs to persist the data, using the localStorage of H5 to save it, but the native api interface is very difficult to use, so it is encapsulated. The api style draws lessons from the data interface style of uni-app.
+>
 > 最近开发公司后台管理项目需要将数据持久化，利用H5的localStorage去保存但是原生的api接口非常不好用，因此对其进行了封装，api风格借鉴了uni-app的[数据接口风格](https://uniapp.dcloud.io/api/storage/storage?id=setstoragesync)
 
-## 源码
 
-```javascript
-/** 
- * @name Private utils 
- * @author SunSeekerX
- * @time 2019年6月27日16点21分
- * @description 浏览器数据持久化存储，工具方法封装
- */
 
-/**
- * @name 将 data数据存储在本地缓存中指定的 key 中，会覆盖掉原来该 key 对应的内容，这是一个同步接口。
- * @param {String} key 本地缓存中的指定的 key
- * @param {Any} data 需要存储的内容，只支持原生类型、及能够通过 JSON.stringify 序列化的对象
- * @param {Boolean} local 是否存储在localStorage true/false
- * @returns {Boolean} 是否保存成功
- * @description 使用时可能会抛出错误，建议请使用trycatch处理
- */
-export function setStorageSync(key, data, local) {
-	// Check environment support
-	if (window.localStorage) {
-		const keyType = typeof key
-		if (keyType === 'string') {
-			// Storage data
-			const dataType = typeof data
-			if (local) {
-				return localStorage.setItem(key, JSON.stringify({
-					dataType,
-					data
-				}))
-			} else {
-				return sessionStorage.setItem(key, JSON.stringify({
-					dataType,
-					data
-				}))
-			}
-		} else {
-			throw new Error(`The key data type should be string instead of ${keyType}`)
-		}
-	} else {
-		throw new Error('The runtime environment does not support local storage')
-	}
-}
+### 🔔 **Attention**
 
-/**
- * @name 从本地缓存中同步获取指定key对应的内容。
- * @param {String} key 本地缓存中的指定的key
- * @param {Boolean} local 是否存储在localStorage true/false
- * @returns {Any} 返回通过key值查询到的data信息
- * @description 使用时可能会抛出错误，建议请使用trycatch处理
- */
-export function getStorageSync(key, local) {
-	// Check environment support
-	if (window.localStorage) {
-		const keyType = typeof key
-		if (keyType === 'string') {
-			// Find data
-			let data = null
-			if (local) {
-				data = JSON.parse(localStorage.getItem(key))
-			} else {
-				data = JSON.parse(sessionStorage.getItem(key))
-			}
-			return (data && data.dataType) ? data.data : null
-		} else {
-			throw new Error(`The key data type should be string instead of ${keyType}`)
-		}
-	} else {
-		throw new Error('The runtime environment does not support local storage')
-	}
-}
-
-/**
- * @name 从本地缓存中同步移除指定key
- * @param {String} key 本地缓存中的指定的key
- * @param {Boolean} local 是否存储在localStorage true/false
- * @returns {Void}
- * @description 使用时可能会抛出错误，建议请使用trycatch处理
- */
-export function removeStorageSync(key, local) {
-	// Check environment support
-	if (window.localStorage) {
-		const keyType = typeof key
-		if (keyType === 'string') {
-			// Remove data
-			if (local) {
-				return localStorage.removeItem(key)
-			} else {
-				return sessionStorage.removeItem(key)
-			}
-		} else {
-			throw new Error(`The key data type should be string instead of ${keyType}`)
-		}
-	} else {
-		throw new Error('The runtime environment does not support local storage')
-	}
-}
-
-/**
- * @name 同步清理本地数据缓存
- * @param {Boolean} local 是否存储在localStorage true/false
- * @returns {Void}
- * @description 使用时可能会抛出错误，建议请使用trycatch处理
- */
-export function clearStorageSync(local) {
-	// Check environment support
-	if (window.localStorage) {
-		// Remove data
-		if (local) {
-			return localStorage.clear()
-		} else {
-			return sessionStorage.clear()
-		}
-	} else {
-		throw new Error('The runtime environment does not support local storage')
-	}
-}
-
-```
+> This library is using in our company project, So you can use it with confidence.
+>
+> If you find any bug,please using Issues.
+>
+> Thanks.
 
 
 
-## 接口文档
+### 📄 Apis
 
-#### setStorageSync(KEY,DATA,LOCAL)
+#### setStorageSync(KEY,DATA[,LOCAL])
 
-将 data 存储在本地缓存中指定的 key 中，会覆盖掉原来该 key 对应的内容，这是一个同步接口。
+> Tr:Storing the data in the key specified in the local cache overwrites the contents of the original key, which is a synchronization interface.
+>
+> 将 data 存储在本地缓存中指定的 key 中，会覆盖掉原来该 key 对应的内容，这是一个同步接口。
 
-**参数说明**
 
-| 参数  | 类型    | 必填 | 默认值 | 说明                                                         |
-| :---- | :------ | :--- | ------ | :----------------------------------------------------------- |
-| key   | String  | 是   |        | 本地缓存中的指定的 key                                       |
-| data  | Any     | 是   |        | 需要存储的内容，只支持原生类型、及能够通过 JSON.stringify 序列化的对象 |
-| local | Boolean | 否   | false  | 是否保存到localStorage                                       |
+
+**Usage**
+
+| Arguments |  Type   | Required | Default | Description                                                  |
+| :-------: | :-----: | :------: | :-----: | :----------------------------------------------------------- |
+|    key    | String  |    Y     |         | The specified key in the local cache                         |
+|   data    |   Any   |    Y     |         | Only native types and objects that can be serialized through JSON.stringify are supported for content that needs to be stored |
+|   local   | Boolean |    N     |  false  | save to localStorage ?                                       |
 
 ```javascript
 try {
@@ -152,16 +54,18 @@ try {
 
 
 
-#### getStorageSync(KEY,LOCAL)
+#### getStorageSync(KEY[,LOCAL])
 
-从本地缓存中同步获取指定key对应的内容
+> Tr:Synchronizes the contents of the specified key from the local cache, which is a synchronization interface
+>
+> 从本地缓存中同步获取指定key对应的内容,这是一个同步接口
 
-**参数说明**
+**Usage**
 
-| 参数  | 类型    | 必填 | 默认值 | 说明                       |
-| :---- | :------ | :--- | ------ | :------------------------- |
-| key   | String  | 是   |        | 本地缓存中的指定的 key     |
-| local | Boolean | 否   | 否     | 是否从localStorage获取数据 |
+| Arguments |  Type   | Required | Default | Description                          |
+| :-------: | :-----: | :------: | :-----: | :----------------------------------- |
+|    key    | String  |    Y     |         | The specified key in the local cache |
+|   local   | Boolean |    N     |  false  | get data from localStorage ?         |
 
 ```javascript
 try {
@@ -178,16 +82,20 @@ try {
 
 
 
-#### removeStorageSync(KEY,LOCAL)
+#### removeStorageSync(KEY[,LOCAL])
 
-从本地缓存中同步移除指定 key。
+> Tr:Synchronously removes the specified key from the local cache.
+>
+> 从本地缓存中同步移除指定 key。
 
-**参数说明**
 
-| 参数  | 类型    | 必填 | 默认值 | 说明                       |
-| :---- | :------ | :--- | ------ | :------------------------- |
-| key   | String  | 是   |        | 本地缓存中的指定的 key     |
-| local | Boolean | 否   | 否     | 是否从localStorage移除数据 |
+
+**Usage**
+
+| Arguments |  Type   | Required | Default | Description                          |
+| :-------: | :-----: | :------: | :-----: | :----------------------------------- |
+|    key    | String  |    Y     |         | The specified key in the local cache |
+|   local   | Boolean |    N     |  false  | remove data from localStorage ?      |
 
 ```javascript
 try {
@@ -201,15 +109,19 @@ try {
 
 
 
-#### clearStorageSync(LOCAL)
+#### clearStorageSync([LOCAL])
 
-同步清理本地数据缓存。
+> Cleans up the local data cache synchronously.
+>
+> 同步清理本地数据缓存。
 
-**参数说明**
 
-| 参数  | 类型    | 必填 | 默认值 | 说明                       |
-| :---- | :------ | :--- | ------ | :------------------------- |
-| local | Boolean | 否   | 否     | 是否从localStorage清除数据 |
+
+**Usage**
+
+| Arguments |  Type   | Required | Default | Description                    |
+| :-------: | :-----: | :------: | :-----: | :----------------------------- |
+|   local   | Boolean |    N     |  false  | clean data from localStorage ? |
 
 ```javascript
 try {
@@ -223,18 +135,18 @@ try {
 
 
 
-## 使用
+### 🔨 Usage
 
-### 引入模块，挂载工具全局对象
+#### Import module
 
 `app/src/main.js`
 
 ```javascript
-import * as util from '@/utils/ssx-utils'
-Vue.prototype.$util = util
+import * as storage from '@/utils/ssx-utils'
+Vue.prototype.$storage = storage
 ```
 
-### 页面使用
+#### Usage in page
 
 `app/src/views/dashboard/index.vue`
 
@@ -274,13 +186,13 @@ export default {
   methods: {
     storageData(name, data) {
       console.log(`存取数据名：${name}，数据为：${data}`)
-      this.$util.setStorageSync(name, data, true)
+      this.$storage.setStorageSync(name, data, true)
     },
     getData(name) {
       try {
         console.log(
           `获取数据名为：${name},数据为：`,
-          this.$util.getStorageSync(name, true)
+          this.$storage.getStorageSync(name, true)
         )
       } catch (error) {
         console.log(error.message)
@@ -288,11 +200,11 @@ export default {
     },
     removeData(name) {
       console.log(`移除数据名为：${name}`)
-      this.$util.removeStorageSync(name, true)
+      this.$storage.removeStorageSync(name, true)
     },
     clearData() {
       console.log(`清除所有数据`)
-      this.$util.clearStorageSync(true)
+      this.$storage.clearStorageSync(true)
     }
   }
 }
@@ -311,6 +223,7 @@ div {
 
 
 
-### 使用示例
+#### Use exampl
 
 ![2.gif](assets/2.gif)
+
