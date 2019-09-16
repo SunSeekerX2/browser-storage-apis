@@ -1,9 +1,10 @@
 /**
  * @name Browser-storage-apis
+ * @description To help you make better use of localstorage
  * @author SunSeekerX
+ * @version 0.1.2
  * @github https://github.com/SunSeekerX/browser-storage-apis
  * @time 2019年6月27日16点21分
- * @description To help you make better use of localstorage
  * @LastEditors SunSeekerX
  * @LastEditTime 2019-09-03 15:33:30
  */

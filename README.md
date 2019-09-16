@@ -227,3 +227,12 @@ div {
 
 ![2.gif](assets/2.gif)
 
+
+
+
+
+## Changelog
+
+- 2019/09/16 添加版本信息
+- 2019/07/29 优化获取不到指定key的返回值为null
+- 2019/07/27 Frist commit
